@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy — Spendly{% endblock %}
+
+{% block content %}
+
+<section class="auth-section" style="align-items: flex-start; padding-top: 4rem;">
+    <div style="max-width: 720px; width: 100%; margin: 0 auto; padding: 0 2rem 4rem;">
+
+        <h1 style="font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); color: var(--ink); margin-bottom: 0.5rem;">Privacy Policy</h1>
+        <p style="font-size: 0.85rem; color: var(--ink-faint); margin-bottom: 3rem;">Last updated: June 2026</p>
+
+        <div style="display: flex; flex-direction: column; gap: 2.5rem;">
+
+            <div>
+                <h2 style="font-family: var(--font-display); font-size: 1.3rem; color: var(--ink); margin-bottom: 0.75rem;">1. Data We Collect</h2>
+                <p style="color: var(--ink-muted); line-height: 1.8;">When you create an account, we collect your name, email address, and a hashed password. When you use Spendly, we store the expense records you enter — including amounts, categories, dates, and optional descriptions. We do not collect payment information or any data beyond what you explicitly provide.</p>
+            </div>
+
+            <div>
+                <h2 style="font-family: var(--font-display); font-size: 1.3rem; color: var(--ink); margin-bottom: 0.75rem;">2. How We Use Your Data</h2>
+                <p style="color: var(--ink-muted); line-height: 1.8;">Your data is used solely to provide the Spendly service — displaying your expense history, generating summaries, and enabling filters. We do not use your financial data for advertising, profiling, or any purpose beyond operating the app. We do not sell or share your data with third parties.</p>
+            </div>
+
+            <div>
+                <h2 style="font-family: var(--font-display); font-size: 1.3rem; color: var(--ink); margin-bottom: 0.75rem;">3. Data Storage</h2>
+                <p style="color: var(--ink-muted); line-height: 1.8;">Your data is stored in a local SQLite database on our server. Passwords are hashed before storage and never stored in plain text. We take reasonable precautions to protect your data, but no system is completely secure. You are responsible for keeping your login credentials confidential. You can request deletion of your account and all associated data at any time.</p>
+            </div>
+
+            <div>
+                <h2 style="font-family: var(--font-display); font-size: 1.3rem; color: var(--ink); margin-bottom: 0.75rem;">4. Third-Party Services</h2>
+                <p style="color: var(--ink-muted); line-height: 1.8;">Spendly loads fonts from Google Fonts, which may log your IP address as part of serving those assets. Beyond that, we do not integrate with any third-party analytics, advertising, or tracking services. No data you enter into Spendly is sent to external services.</p>
+            </div>
+
+            <div>
+                <h2 style="font-family: var(--font-display); font-size: 1.3rem; color: var(--ink); margin-bottom: 0.75rem;">5. Contact Us</h2>
+                <p style="color: var(--ink-muted); line-height: 1.8;">If you have any questions about this Privacy Policy or would like to request deletion of your data, please reach out at <a href="mailto:privacy@spendly.app" style="color: var(--accent); font-weight: 500;">privacy@spendly.app</a>. We aim to respond to all privacy-related requests within 7 business days.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}
