@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Profile — Spendly{% endblock %}
+
+{% block content %}
+
+<section class="profile-section">
+    <div class="profile-inner">
+
+        <!-- User info card -->
+        <div class="profile-header">
+            <div class="avatar">{{ user.initials }}</div>
+            <div class="profile-info">
+                <p class="profile-info-name">{{ user.name }}</p>
+                <p class="profile-info-email">{{ user.email }}</p>
+                <p class="profile-info-since">Member since {{ user.member_since }}</p>
+            </div>
+        </div>
+
+        <!-- Summary stats -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <span class="stat-label">Total Spent</span>
+                <span class="stat-value">{{ stats.total_spent }}</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Transactions</span>
+                <span class="stat-value">{{ stats.transaction_count }}</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Top Category</span>
+                <span class="stat-value stat-value--sm">{{ stats.top_category }}</span>
+            </div>
+        </div>
+
+        <!-- Transactions + Category breakdown -->
+        <div class="profile-grid">
+
+            <div class="profile-card">
+                <p class="profile-card-title">Recent Transactions</p>
+                <table class="txn-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th class="txn-amount">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for txn in transactions %}
+                        <tr>
+                            <td class="txn-date">{{ txn.date }}</td>
+                            <td>{{ txn.description }}</td>
+                            <td><span class="badge badge--{{ txn.category }}">{{ txn.category }}</span></td>
+                            <td class="txn-amount">{{ txn.amount }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="profile-card">
+                <p class="profile-card-title">Category Breakdown</p>
+                <div class="breakdown-list">
+                    {% for cat in categories %}
+                    <div class="breakdown-row">
+                        <div class="breakdown-meta">
+                            <span class="breakdown-name">{{ cat.name }}</span>
+                            <span class="breakdown-amt">{{ cat.amount }}</span>
+                        </div>
+                        <div class="bar-track">
+                            <div class="bar-fill bar-fill--{{ loop.index }}" data-pct="{{ cat.percent }}"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.querySelectorAll('.bar-fill[data-pct]').forEach(function(el) {
+        el.style.width = el.dataset.pct + '%';
+    });
+</script>
+{% endblock %}
