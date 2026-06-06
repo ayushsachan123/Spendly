@@ -57,7 +57,10 @@
         <div class="profile-grid">
 
             <div class="profile-card">
-                <p class="profile-card-title">Recent Transactions</p>
+                <div class="profile-card-header">
+                    <p class="profile-card-title">Recent Transactions</p>
+                    <a href="{{ url_for('add_expense') }}" class="btn-primary">+ Add Expense</a>
+                </div>
                 <table class="txn-table">
                     <thead>
                         <tr>

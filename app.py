@@ -11,7 +11,9 @@ from database.queries import (
 )
 
 app = Flask(__name__)
-app.secret_key = "spendly-dev-secret"
+app.secret_key = __import__("os").environ.get("SECRET_KEY", "spendly-dev-secret")
+
+CATEGORIES = ["Food", "Transport", "Bills", "Health", "Entertainment", "Shopping", "Other"]
 
 
 def _parse_date(value):
@@ -136,9 +138,56 @@ def profile():
                            from_date=from_date, to_date=to_date)
 
 
-@app.route("/expenses/add")
+@app.route("/expenses/add", methods=["GET", "POST"])
 def add_expense():
-    return "Add expense — coming in Step 7"
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    if request.method == "GET":
+        today = datetime.now().strftime("%Y-%m-%d")
+        return render_template("add_expense.html", today=today, categories=CATEGORIES)
+
+    amount_raw = request.form.get("amount", "").strip()
+    category = request.form.get("category", "").strip()
+    date_raw = request.form.get("date", "").strip()
+    description = request.form.get("description", "").strip()
+
+    def render_form(error):
+        return render_template(
+            "add_expense.html",
+            error=error,
+            today=datetime.now().strftime("%Y-%m-%d"),
+            amount=amount_raw, category=category,
+            date=date_raw, description=description,
+            categories=CATEGORIES,
+        )
+
+    try:
+        amount = float(amount_raw)
+        if amount <= 0:
+            raise ValueError
+    except (ValueError, TypeError):
+        return render_form("Amount must be a positive number.")
+
+    try:
+        datetime.strptime(date_raw, "%Y-%m-%d")
+    except ValueError:
+        return render_form("Please enter a valid date.")
+
+    if category not in CATEGORIES:
+        return render_form("Please select a valid category.")
+
+    conn = get_db()
+    try:
+        conn.execute(
+            "INSERT INTO expenses (user_id, amount, category, date, description) VALUES (?, ?, ?, ?, ?)",
+            (session["user_id"], amount, category, date_raw, description or None),
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+    return redirect(url_for("profile"))
 
 
 @app.route("/expenses/<int:id>/edit")
