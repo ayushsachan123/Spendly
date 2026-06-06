@@ -1,4 +1,5 @@
 import sqlite3
+from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.db import get_db, init_db, seed_db
@@ -11,6 +12,14 @@ from database.queries import (
 
 app = Flask(__name__)
 app.secret_key = "spendly-dev-secret"
+
+
+def _parse_date(value):
+    try:
+        datetime.strptime(value.strip(), "%Y-%m-%d")
+        return value.strip()
+    except (ValueError, AttributeError):
+        return None
 
 with app.app_context():
     init_db()
@@ -112,13 +121,19 @@ def profile():
     if not session.get("user_id"):
         return redirect(url_for("login"))
 
+    from_date = _parse_date(request.args.get("from", ""))
+    to_date = _parse_date(request.args.get("to", ""))
+    if from_date and to_date and from_date > to_date:
+        from_date = to_date = None
+
     uid = session["user_id"]
-    user         = get_user_by_id(uid)
-    stats        = get_summary_stats(uid)
-    transactions = get_recent_transactions(uid)
-    categories   = get_category_breakdown(uid)
+    user = get_user_by_id(uid)
+    stats = get_summary_stats(uid, from_date=from_date, to_date=to_date)
+    transactions = get_recent_transactions(uid, from_date=from_date, to_date=to_date)
+    categories = get_category_breakdown(uid, from_date=from_date, to_date=to_date)
     return render_template("profile.html", user=user, stats=stats,
-                           transactions=transactions, categories=categories)
+                           transactions=transactions, categories=categories,
+                           from_date=from_date, to_date=to_date)
 
 
 @app.route("/expenses/add")
