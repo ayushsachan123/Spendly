@@ -673,6 +673,44 @@ a { color: inherit; text-decoration: none; }
     margin-top: 0.25rem;
 }
 
+/* Date filter */
+.date-filter {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.date-filter-fields {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.date-filter-label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.85rem;
+    color: var(--ink);
+}
+
+.date-filter-input {
+    padding: 0.4rem 0.6rem;
+    border: 1px solid var(--ink);
+    border-radius: 4px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: inherit;
+}
+
+.date-filter-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-end;
+}
+
 /* Summary stats */
 .stats-row {
     display: grid;

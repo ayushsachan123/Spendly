@@ -17,6 +17,26 @@
             </div>
         </div>
 
+        <!-- Date filter -->
+        <form class="date-filter" method="GET" action="{{ url_for('profile') }}">
+            <div class="date-filter-fields">
+                <label class="date-filter-label">
+                    From
+                    <input class="date-filter-input" type="date" name="from"
+                           value="{{ from_date or '' }}">
+                </label>
+                <label class="date-filter-label">
+                    To
+                    <input class="date-filter-input" type="date" name="to"
+                           value="{{ to_date or '' }}">
+                </label>
+            </div>
+            <div class="date-filter-actions">
+                <button class="btn-primary" type="submit">Apply</button>
+                <a class="btn-ghost" href="{{ url_for('profile') }}">Clear</a>
+            </div>
+        </form>
+
         <!-- Summary stats -->
         <div class="stats-row">
             <div class="stat-card">
@@ -85,9 +105,11 @@
 {% endblock %}
 
 {% block scripts %}
+{% if categories %}
 <script>
     document.querySelectorAll('.bar-fill[data-pct]').forEach(function(el) {
         el.style.width = el.dataset.pct + '%';
     });
 </script>
+{% endif %}
 {% endblock %}
